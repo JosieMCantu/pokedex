@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-
-
-export default class CharacterList extends Component {
-
+//sorts by ascend and descend
+export default class SearchOrder extends Component {
     render() {
-
         return (
             <div>
-                <p>{this.props.pokedata.pokemon}</p>
+
             </div>
         )
     }

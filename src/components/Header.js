@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import NavLink from './NavLink.js';
 
 export default class Header extends Component {
     render() {
         return (
-            <div>
-
-            </div>
+            <header>
+                <header>header</header>
+                <NavLink />
+            </header>
         )
     }
 }
