@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import React, { Component } from 'react'
 import './App.css';
+import ListPage from './components/ListPage.js';
+import pokedata from './data.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+export default class App extends Component {
+  state = {
+    attack: '',
+    defense: '',
+    hp: '',
+  }
+  render() {
+    const filteredPoke = pokedata.filter((poke) => {
+      if (!this.state.attack && !this.state.keyword)
+        return true;
+    });
+
+    return (
+      <>
+        <div>
+          <header>Hello!</header>
+        </div>
+
+        <div>
+          <ListPage pokedata={filteredPoke} />
+        </div>
+      </>
+    )
+  }
 }
 
-export default App;
+
+
