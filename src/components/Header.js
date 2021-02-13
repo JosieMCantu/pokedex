@@ -1,13 +1,17 @@
-import React, { Component } from 'react'
-import NavLink from './NavLink.js';
+import React from 'react'
+import { NavLink, withRouter } from 'react-router-dom';
 
-export default class Header extends Component {
+export default withRouter(class Header extends React.Component {
     render() {
         return (
-            <header>
-                <header>header</header>
-                <NavLink />
-            </header>
+            <nav classname="nav-links">
+
+                {this.props.location.pathname !== '/' && <NavLink exact activeClassName='link' to="/">Home</NavLink>
+                }
+                {
+                    this.props.location.pathname !== '/search' && <NavLink exact activeClassName='navLink' to='/search'>Search</NavLink>
+                }
+            </nav>
         )
     }
-}
+})

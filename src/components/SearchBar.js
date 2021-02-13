@@ -3,9 +3,10 @@ import React, { Component } from 'react'
 export default class SearchBar extends Component {
     render() {
         return (
-            <>
-                <input value={this.props.currentValue} onChange={this.handleChange} />
+            <><div className="search-container">
+                <input className="search-bar" value={this.props.currentValue} onChange={this.props.handleChange} />
                 <button>Submit</button>
+            </div>
             </>
         )
     }

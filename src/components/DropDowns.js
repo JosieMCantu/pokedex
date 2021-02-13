@@ -3,13 +3,10 @@ import React, { Component } from 'react'
 export default class DropDowns extends Component {
     render() {
         return (
-            <>
-                Sort by
-                <select onChange={this.handleChange}>
-                    <option value="ascending">Ascending</option>
-                    <option value="descending">Descending</option>
+            <><div className="drop-container">
+                <select value={this.props.currentValue} onChange={this.props.handleChange}>{this.props.options.map(listItem => <option key={listItem} value={listItem}>{listItem}</option>)}
                 </select>
-
+            </div>
             </>
         )
     }
