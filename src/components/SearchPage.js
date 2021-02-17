@@ -1,66 +1,51 @@
 import React, { Component } from 'react'
 import '../App.css';
-import pokedata from '../data.js';
-import DropDowns from './DropDowns.js';
-import PokeList from './PokeList.js';
-import SearchBar from './SearchBar.js';
+import request from 'superagent';
+import Spinner from './Spinner.js';
 
 export default class ListPage extends Component {
     state = {
-        pokemon: pokedata,
-        sortOrder: 'Ascend',
-        sortBy: 'pokemon',
-        filter: ''
+        pokemon: [],
+        filter: '',
+        loading: false,
     }
-    handleFilterChange = (e) => {
-        this.setState({
-            filter: e.target.value
-        })
+    componentDidMount = async () => {
+        await this.fetchPokemon();
     }
-    handleSortOrderChange = (e) => {
-        this.setState({
-            sortOrder: e.target.value,
-        });
+    fetchPokemon = async () => {
+        const myData = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${this.state.filter}`);
+        this.setState({ loading: true });
+        this.setState({ pokemon: myData.body.results });
+        this.setState({ loading: false });
     }
-    handleSortByChange = (e) => {
-        this.setState({
-            sortBy: e.target.value,
-        })
+    handleClick = async () => {
+        await this.fetchPokemon();
     }
+    handleFilterChange = async (e) => {
+        this.setState({ filter: e.target.value });
+    }
+
 
     render() {
-        if (this.state.sortBy) {
-            if (typeof (pokedata[0][this.state.sortBy]) === 'number') {
-                if (this.state.sortOrder === 'Ascend') {
-                    this.state.pokemon.sort((a, b) => a[this.state.sortBy] - (b[this.state.sortBy]))
-                } else {
-                    this.state.pokemon.sort((a, b) => b[this.state.sortBy] - (a[this.state.sortBy]))
-                };
-            }
-        }
 
-        if (this.state.sortBy) {
-            if (typeof (pokedata[0][this.state.sortBy]) !== 'number') {
-                if (this.state.sortOrder === 'Ascend') {
-                    this.state.pokemon.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]))
-                } else {
-                    this.state.pokemon.sort((a, b) => b[this.state.sortBy].localeCompare(a[this.state.sortBy]))
-                };
-            }
-        }
-
-        const filteredPokemon = pokedata.filter(poke =>
-            poke.pokemon.includes(this.state.filter));
-        console.log(filteredPokemon);
         return (
             <>
-                <DropDowns handleChange={this.handleSortOrderChange} currentValue={this.state.sortOrder} options={['Ascending', 'Descending']} />
-
-                <DropDowns handleChange={this.handleSortByChange} currentValue={this.state.sortBy} options={['attack', 'defense', 'type_1', 'pokemon']} />
-
-                <SearchBar handleChange={this.handleFilterChange} currentValue={this.state.filter} options={this.state.filter} />
-
-                <PokeList pokedata={filteredPokemon} />
+                <label>
+                    <input onChange={this.handleFilterChange} />
+                </label>
+                <button onClick={this.handleClick}>Search</button>
+                <div>
+                    {
+                        this.state.loading
+                            ? <Spinner />
+                            : this.state.pokemon.map(poke =>
+                                <div key={poke.pokemon}>
+                                    <div>
+                                        <img src={poke.url_image} alt="poke" />
+                                    </div>
+                                    {poke.pokemon} : {poke.type_1}
+                                </div>)}
+                </div>
             </>
         )
 
