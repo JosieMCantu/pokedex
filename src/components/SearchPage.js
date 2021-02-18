@@ -14,7 +14,8 @@ export default class ListPage extends Component {
         filter: '',
         loading: false,
         currentPage: 1,
-        perPage: 10
+        perPage: 10,
+        totalPokemon: 0
     }
     componentDidMount = async () => {
         await this.fetchPokemon();
@@ -65,24 +66,26 @@ export default class ListPage extends Component {
         const lastPage = Math.ceil(this.state.totalPokemon / this.state.perPage)
         return (
             <>
-                <div classname="display-container">
-                    <DropDowns handleChange={this.handleSortOrder} currentValue={this.state.sortOrder} options={['Ascending', 'Descending']} />
-                    <DropDowns handleChange={this.handleSortBy} currentValue={this.state.sortBy} options={['attack', 'defense', 'type_1', 'pokemon']} />
-                    <SearchBar handleChange={this.handleFilterChange} onClick={this.handleClick} />
+                <div className="display-container">
+                    <div className="query-container">
+                        <DropDowns handleChange={this.handleSortOrder} currentValue={this.state.sortOrder} options={['Ascending', 'Descending']} />
+                        <DropDowns handleChange={this.handleSortBy} currentValue={this.state.sortBy} options={['attack', 'defense', 'type_1', 'pokemon']} />
+                        <SearchBar handleChange={this.handleFilterChange} onClick={this.handleClick} />
 
-                    <h2>Page {this.state.currentPage}</h2>
-                    <label>
-                        Results per page:
+
+                        <label>
+                            Results per page:
                         <select onChange={this.handlePerPage}>
-                            <option value={10}>10</option>
-                            <option value={50}>50</option>
-                            <option value={75}>75</option>
-                            <option value={100}>100</option>
-                        </select>
-                    </label>
-                    <button onClick={this.handlePreviousClick} disabled={this.state.currentPage === 1}>Previous</button>
-                    <button onClick={this.handleNextClick} disabled={this.state.currentPage === lastPage}>Next</button>
-
+                                <option value={10}>10</option>
+                                <option value={50}>50</option>
+                                <option value={75}>75</option>
+                                <option value={100}>100</option>
+                            </select>
+                        </label>
+                        <button onClick={this.handlePreviousClick} disabled={this.state.currentPage === 1}>Previous</button>
+                        <button onClick={this.handleNextClick} disabled={this.state.currentPage === lastPage}>Next</button>
+                        <h2>Page {this.state.currentPage}</h2>
+                    </div>
                     {
                         this.state.loading
                             ? <Spinner />
