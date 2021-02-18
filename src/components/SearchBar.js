@@ -5,7 +5,7 @@ export default class SearchBar extends Component {
         return (
             <><div className="search-container">
                 <input className="search-bar" value={this.props.currentValue} onChange={this.props.handleChange} />
-                <button>Submit</button>
+                <button onClick={this.props.onClick}>Submit</button>
             </div>
             </>
         )
